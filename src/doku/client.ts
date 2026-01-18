@@ -158,6 +158,7 @@ export async function createDokuCheckoutPayment(input: {
     body: bodyJson,
   });
 
+  console.log("DOKU Payment Response Status:", res.status, res);
   const text = await res.text();
   let data: any;
   try {
@@ -165,6 +166,8 @@ export async function createDokuCheckoutPayment(input: {
   } catch {
     data = { raw: text };
   }
+
+  console.log(data, "DOKU Payment Response Data:");
 
   if (!res.ok) {
     const err = new Error(`DOKU error ${res.status}`);
