@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  doku-checkout-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # Override these with your production values
+      - DOKU_ENV=${DOKU_ENV:-sandbox}
+      - DOKU_CLIENT_ID=${DOKU_CLIENT_ID}
+      - DOKU_SECRET_KEY=${DOKU_SECRET_KEY}
+      - PUBLIC_BASE_URL=${PUBLIC_BASE_URL}
+      - API_SECRET_KEY=${API_SECRET_KEY}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
